@@ -5,7 +5,7 @@
 ;; Author: Noah Friedman <friedman@splode.com>
 ;; Maintainer: friedman@splode.com
 
-;; $Id: bytecomp-fns.el,v 1.4 2007/08/09 07:29:05 friedman Exp $
+;; $Id: bytecomp-fns.el,v 1.5 2010/07/03 16:17:29 friedman Exp $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -65,11 +65,11 @@ Syntax is exactly like `defun', but the function body is immediately
 byte-compiled if the variable `defun-compile-compile-p' is non-nil."
   (if (not defun-compile-compile-p)
       (cons 'defun args)
-    (` (progn
-         (defun (,@ args))
-         (byte-compile '(, (car args)))
+    `(progn
+         (defun ,@args)
+         (byte-compile ',(car args))
          ;; be like defun, which returns the function name, not body.
-         '(, (car args))))))
+         ',(car args))))
 
 ;;;###autoload
 (defmacro defvar-compile (&rest args)
